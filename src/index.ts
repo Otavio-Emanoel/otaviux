@@ -1,5 +1,9 @@
 import fs from 'fs';
 import { tokenize } from './core/lexer';
+import Parser from './core/parser';
+import { evaluate } from './runtime/interpreter';
+
+// A FUNÇÃO PRINCIPAL
 
 export function main(args: string[]) {
     const userArgs = args.slice(2);
@@ -20,16 +24,15 @@ export function main(args: string[]) {
     try {
         const sourceCode = fs.readFileSync(filename, 'utf-8');
         
-        console.log(`🔨 Lendo ${filename}...`);
+        const parser = new Parser();
+        const ast = parser.produceAST(sourceCode);
         
-        // CHAMA O LEXER
-        const tokens = tokenize(sourceCode);
+        const result = evaluate(ast);
         
-        console.log("✅ Tokens gerados com sucesso:");
-        console.log(tokens);
+        console.log("\nResultado da Execução:");
+        console.log(">", result);
         
     } catch (err) {
-        console.error(`❌ Erro ao ler arquivo: ${filename}`);
-        process.exit(1);
+        console.error(err);
     }
 }
