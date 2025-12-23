@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+// Aqui a gente importa o código já compilado da pasta dist
+const { main } = require('../dist/index.js');
+
+// Roda a função principal passando os argumentos do terminal
+main(process.argv);

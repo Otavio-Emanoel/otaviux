@@ -4,7 +4,7 @@
   "description": "A linguagem de programação otaviux é uma linguagem criada para facilitar o desenvolvimento de aplicações web e de linha de comando, com uma sintaxe simples e intuitiva.",
   "main": "dist/index.js",
   "bin": {
-    "otaviux": "./dist/index.js"
+    "otaviux": "bin/otaviux"
   },
   "scripts": {
     "build": "tsc",

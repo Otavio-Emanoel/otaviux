@@ -1,32 +1,35 @@
-#!/usr/bin/env node
 import fs from 'fs';
-import path from 'path';
+import { tokenize } from './core/lexer';
 
-// Pegando os argumentos do terminal
-// Se você digitar: otaviux teste.otx
-// args[0] é o node, args[1] é o otaviux, args[2] é 'teste.otx'
-const args = process.argv.slice(2);
+export function main(args: string[]) {
+    const userArgs = args.slice(2);
 
-if (args.length === 0) {
-    console.error("❌ Erro: Por favor, informe um arquivo .otx para rodar.");
-    console.log("👉 Uso: otaviux <arquivo>");
-    process.exit(1);
+    if (userArgs.length === 0) {
+        console.error("❌ Erro: Informe um arquivo .otaviux");
+        process.exit(1);
+    }
+
+    const filename = userArgs[0];
+
+    // VALIDAÇÃO DA EXTENSÃO
+    if (!filename.endsWith(".otaviux")) {
+        console.error("❌ Erro: O arquivo deve ter a extensão .otaviux");
+        process.exit(1);
+    }
+    
+    try {
+        const sourceCode = fs.readFileSync(filename, 'utf-8');
+        
+        console.log(`🔨 Lendo ${filename}...`);
+        
+        // CHAMA O LEXER
+        const tokens = tokenize(sourceCode);
+        
+        console.log("✅ Tokens gerados com sucesso:");
+        console.log(tokens);
+        
+    } catch (err) {
+        console.error(`❌ Erro ao ler arquivo: ${filename}`);
+        process.exit(1);
+    }
 }
-
-const filename = args[0];
-
-// Verifica se o arquivo existe
-if (!fs.existsSync(filename)) {
-    console.error(`❌ Erro: O arquivo '${filename}' não foi encontrado.`);
-    process.exit(1);
-}
-
-// Lê o código fonte do arquivo .otx
-const sourceCode = fs.readFileSync(filename, 'utf-8');
-
-console.log("🚀 Rodando Otaviux...");
-console.log("---------------------");
-
-// AQUI VAI ENTRAR SEU COMPILADOR
-// Por enquanto, vamos só mostrar o que ele leu
-console.log(sourceCode);
