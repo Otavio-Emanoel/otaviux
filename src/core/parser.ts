@@ -1,5 +1,4 @@
-// src/core/parser.ts
-import { Stmt, Program, Expr, BinaryExpr, NumericLiteral, Identifier } from "./ast";
+import { Stmt, Program, Expr, BinaryExpr, NumericLiteral, Identifier, VariableDeclaration } from "./ast";
 import { tokenize } from "./lexer";
 import { Token, TokenType } from "./token";
 
@@ -36,12 +35,6 @@ export default class Parser {
     }
 
     return program;
-  }
-
-  // Lida com Declarações (Statements)
-  private parse_stmt(): Stmt {
-    // Por enquanto, tudo é tratado como expressão
-    return this.parse_expr();
   }
 
   // Lida com Expressões (Equation)
@@ -115,5 +108,38 @@ export default class Parser {
         console.error("Token inesperado encontrado durante o parse:", this.at());
         process.exit(1);
     }
+  }
+
+  // Lida com Declarações
+  private parse_stmt(): Stmt {
+    // Se o token atual for "let", parseia declaração
+    if (this.at().type == TokenType.Let) {
+      return this.parse_var_declaration();
+    }
+
+    // Se não, continua sendo uma expressão normal
+    return this.parse_expr();
+  }
+
+  // LET IDENT = EXPR;
+  private parse_var_declaration(): Stmt {
+    // @ts-ignore
+    const isConstant = this.eat().type == TokenType.Const; 
+    const identifier = this.eat().value; // Pega o nome da variável
+
+    if (this.at().type == TokenType.Equals) {
+      this.eat(); // come o "="
+      const declaration = {
+        kind: "VariableDeclaration",
+        identifier,
+        value: this.parse_expr(), // A expressão depois do igual (ex: 10 + 5)
+        constant: false,
+      } as VariableDeclaration;
+      
+      return declaration;
+    }
+
+    // Se não tiver "=", ex: "let x;", apenas declara como undefined (future feature)
+    throw "Erro: Otaviux ainda exige que você atribua valor (ex: let x = 10)";
   }
 }

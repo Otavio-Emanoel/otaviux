@@ -2,6 +2,7 @@ import fs from 'fs';
 import { tokenize } from './core/lexer';
 import Parser from './core/parser';
 import { evaluate } from './runtime/interpreter';
+import Environment from './runtime/environment';
 
 // A FUNÇÃO PRINCIPAL
 
@@ -26,11 +27,14 @@ export function main(args: string[]) {
         
         const parser = new Parser();
         const ast = parser.produceAST(sourceCode);
-        
-        const result = evaluate(ast);
-        
-        console.log("\nResultado da Execução:");
-        console.log(">", result);
+
+        // 1. Cria o ambiente Global
+        const env = new Environment(undefined);
+
+        // 2. Passa o ambiente para o evaluate
+        const result = evaluate(ast, env);
+
+        console.log("\nResultado:", result);
         
     } catch (err) {
         console.error(err);

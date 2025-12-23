@@ -5,7 +5,8 @@ export type NodeType =
   | "Program" 
   | "NumericLiteral" 
   | "Identifier" 
-  | "BinaryExpr";
+  | "BinaryExpr"
+  | "VariableDeclaration";
 
 // Interface base para qualquer nó da árvore
 export interface Stmt {
@@ -40,4 +41,11 @@ export interface Identifier extends Expr {
 export interface NumericLiteral extends Expr {
   kind: "NumericLiteral";
   value: number;
+}
+
+export interface VariableDeclaration extends Stmt {
+  kind: "VariableDeclaration";
+  constant: boolean;
+  identifier: string;
+  value?: Expr; // O valor pode ser vazio (ex: let x;)
 }
