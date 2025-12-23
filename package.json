@@ -1,0 +1,26 @@
+{
+  "name": "otaviux",
+  "version": "1.0.0",
+  "description": "A linguagem de programação otaviux é uma linguagem criada para facilitar o desenvolvimento de aplicações web e de linha de comando, com uma sintaxe simples e intuitiva.",
+  "main": "dist/index.js",
+  "bin": {
+    "otaviux": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "chalk": "^4.1.2" 
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
